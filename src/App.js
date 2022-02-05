@@ -1,7 +1,10 @@
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
+
+// styles
 import "./App.css";
 
+// pages & components
 import Dashboard from "./pages/dashboard/Dashboard";
 import Create from "./pages/create/Create";
 import Login from "./pages/login/Login";
@@ -12,7 +15,7 @@ import Sidebar from "./components/Sidebar";
 import OnlineUsers from "./components/OnlineUsers";
 
 function App() {
-  const { user, authIsReady } = useAuthContext();
+  const { authIsReady, user } = useAuthContext();
 
   return (
     <div className="App">
@@ -30,7 +33,7 @@ function App() {
                 {!user && <Redirect to="/login" />}
                 {user && <Create />}
               </Route>
-              <Route path="/project/:id">
+              <Route path="/projects/:id">
                 {!user && <Redirect to="/login" />}
                 {user && <Project />}
               </Route>
@@ -39,12 +42,11 @@ function App() {
                 {!user && <Login />}
               </Route>
               <Route path="/signup">
-                {user && <Redirect to="/" />}
+                {user && user.displayName && <Redirect to="/" />}
                 {!user && <Signup />}
               </Route>
             </Switch>
           </div>
-
           {user && <OnlineUsers />}
         </BrowserRouter>
       )}
